@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ArticlesController!{% endblock %}
+
+{% block body %}
+<div class="container">
+    <ul>
+        {% for article in articles %}
+        <li>{{ article.title }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
