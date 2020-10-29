@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ArticlesController!{% endblock %}
+{% block title %}SymfAPI - Liste des articles{% endblock %}
 
 {% block body %}
 <div class="container">
+    <h1>Voici la liste des articles</h1>
     <ul>
         {% for article in articles %}
-        <li>{{ article.title }}</li>
+        <li><a href="{{ path('article', { 'id' : article.id }) }}">{{ article.title }}</a></li>
         {% endfor %}
     </ul>
 </div>
