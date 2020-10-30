@@ -92,4 +92,5 @@ class Comment
 
         return $this;
     }
+
 }

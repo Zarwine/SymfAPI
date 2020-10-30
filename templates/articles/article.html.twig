@@ -7,4 +7,16 @@
 <h1>{{article.title}}</h1>
 <p>{{article.content}}</p>
 </div>
+<div class="container">
+    <h2>Liste des commentaire</h2>
+    <ul>
+        {% for comment in comments %}
+            <li>
+                <h4>{{ comment.author.id }}</h4>
+                <small>{{ comment.createdAt | date("d/m/Y") }}</small>
+                <p>{{ comment.content }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

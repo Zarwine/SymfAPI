@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Repository\ArticleRepository;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,9 +19,7 @@ class ArticlesController extends AbstractController
      * @Route("/articles", name="articles")
      */
     public function showAllArticles(ArticleRepository $repo): Response
-    {
-        
-
+    {        
         $articles = $repo->findAll();
 
         return $this->render('articles/articles.html.twig', [
@@ -30,19 +30,21 @@ class ArticlesController extends AbstractController
     /**
      * @Route("/article/{id}", name="article")
      */
-    public function showArticle(Article $article, Request $request, EntityManagerInterface $manager): Response
-    {
-        
+    public function showArticle(Article $article, Request $request, EntityManagerInterface $manager, CommentRepository $commentRepo): Response
+    {       
 
+        $comments = $commentRepo->findBy(["article" => $article->getId()]);
+        
         return $this->render('articles/article.html.twig', [
-            'article' => $article,
+            'article'  => $article,
+            'comments' => $comments
         ]);
     }
 
     /**
      * @Route("/blog/{id}", name="blog_show")
      */
-    public function show(Article $article, Request $request, EntityManagerInterface $manager)
+    public function show(Article $article, Request $request, EntityManagerInterface $manager, User $user)
     {
         $comment = new Comment();
 
@@ -52,7 +54,8 @@ class ArticlesController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $comment->setCreatedAt(new \DateTime())
-                    ->setArticle($article);
+                    ->setArticle($article)
+                    ->setAuthor($user);
             $manager->persist($comment);
             $manager->flush();
 
